@@ -3,12 +3,15 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
     container: {
-      borderRadius: 4,
-      borderWidth: 0.5,
-      borderColor: '#d6d7da',
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center'
     },
-    title: {
+    noNotes: {
       fontSize: 19,
       fontWeight: 'bold',
+    },
+    icon: {
+        margin: 10
     }
   });

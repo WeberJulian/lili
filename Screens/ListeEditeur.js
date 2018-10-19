@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { FAB, Portal } from 'react-native-paper';
 import { withNavigationFocus } from 'react-navigation';
 
@@ -22,7 +22,8 @@ class ListeEditeur extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Text>Pas encore de notes !</Text>
+				<FontAwesome name="folder-open-o" size={70} style={styles.icon}/>
+				<Text style={styles.noNotes}>Pas encore de notes !</Text>
 				<Portal>
 					{this.props.isFocused ? (
 						<FAB.Group
@@ -50,5 +51,6 @@ class ListeEditeur extends Component {
 		);
 	}
 }
+
 
 export default withNavigationFocus(ListeEditeur);
