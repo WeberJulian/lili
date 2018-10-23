@@ -7,6 +7,9 @@ export default StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center'
     },
+    listeContainer: {
+        flex: 1
+    },
     noNotes: {
       fontSize: 19,
       fontWeight: 'bold',
