@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, ActivityIndicator, AsyncStorage } from 'react-native';
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { List } from 'react-native-paper';
+import { Ionicons, FontAwesome, Entypo } from '@expo/vector-icons';
 import { FAB, Portal } from 'react-native-paper';
 import { withNavigationFocus } from 'react-navigation';
 
@@ -16,19 +17,21 @@ class ListeEditeur extends Component {
 		this.state = {
 			open: false,
 			loading: false,
-			liste: []
-			// liste: [
-			// 	{
-			// 		title: '1ere note',
-			// 		content:
-			// 			'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-			// 	},
-			// 	{
-			// 		title: '2eme note',
-			// 		content:
-			// 			'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-			// 	}
-			// ]
+			liste: [],
+			liste: [
+				{
+					title: '1ere note',
+					preview: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+					content:
+						'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+				},
+				{
+					title: '2eme note',
+					preview: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+					content:
+						'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+				}
+			]
 		};
 	}
 
@@ -66,7 +69,11 @@ class ListeEditeur extends Component {
 							icon={this.state.open ? 'cancel' : 'add'}
 							actions={[
 								{ icon: 'add', label: 'Vide', onPress: () => console.log('Pressed email') },
-								{ icon: 'photo-camera', label: 'Scan', onPress: () => this.props.navigation.push('PhotoEditeur') }
+								{
+									icon: 'photo-camera',
+									label: 'Scan',
+									onPress: () => this.props.navigation.push('PhotoEditeur')
+								}
 							]}
 							onStateChange={({ open }) => this.setState({ open })}
 							onPress={() => {
@@ -95,13 +102,28 @@ const GenerateListe = (props) => {
 	} else {
 		var ListeComponent = [];
 		for (var i = 0; i < props.liste.length; i++) {
-			ListeComponent.push(
-				<View key={i}>
-					<Text>{props.liste[i].title}</Text>
-				</View>
-			);
+			ListeComponent.push(<Note key={i*2+1} title={props.liste[i].title} preview={props.liste[i].preview} />);
+			ListeComponent.push(<Separator key={i*2}/>);
 		}
+		ListeComponent.pop();
 		return <View style={styles.listeContainer}>{ListeComponent}</View>;
 	}
 };
+
+const Note = (props) => (
+	<View style={{ flexDirection: 'row', marginVertical: 5 }}>
+		<View style={styles.icon}>
+			<Entypo name="text" size={40} color="white"/>
+		</View>
+		<View style={{justifyContent: "center"}}>
+			<Text style={styles.title}>{props.title}</Text>
+			<Text style={styles.preview}>{props.preview}</Text>
+		</View>
+	</View>
+);
+
+const Separator = () => (
+	<View style={styles.separator}/>
+);
+
 export default withNavigationFocus(ListeEditeur);

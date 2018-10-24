@@ -1,26 +1,29 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Button } from 'react-native-paper';
 
 export default class ClasseVirtuelle extends Component {
-  static navigationOptions = {
-    tabBarLabel: 'Classe Virtuelle',
-    tabBarIcon: ({ tintColor }) => (
-      <Ionicons name="ios-school" size={24} color={tintColor}/>
-    ),
-  }
-  
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
+	static navigationOptions = {
+		title: 'Classe Virtuelle'
+	};
 
-  render() {
-    return (
-      <View>
-        <Text> ClasseVirtuelle </Text>
-      </View>
-    );
-  }
+	constructor(props) {
+		super(props);
+		this.state = {};
+	}
+
+	render() {
+		return (
+			<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+				<Button icon="group-add" mode="contained" color="orange" onPress={() => console.log('Pressed')}>
+					Entre un code
+				</Button>
+        <View style={{ height: 20, width: 20}}/>
+				<Button icon="add-a-photo" mode="contained" color="orange" onPress={() => console.log('Pressed')}>
+					Scanne un QR
+				</Button>
+			</View>
+		);
+	}
 }

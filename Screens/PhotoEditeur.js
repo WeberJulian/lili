@@ -5,8 +5,7 @@ import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
 export default class Editeur extends Component {
 	static navigationOptions = {
-		title: 'Scanne un texte !',
-		photo: ''
+		title: 'Scanne un texte !'
 	};
 
 	constructor(props) {
@@ -26,13 +25,11 @@ export default class Editeur extends Component {
 
 	switchFlash() {
 		this.setState((state) => ({ flash: !state.flash }));
-		console.log(this.state.flash);
 	}
 
 	snap = async () => {
 		if (this.camera) {
 			let photo = await this.camera.takePictureAsync();
-			console.log(JSON.stringify(photo));
 			this.setState({ photo: photo.uri });
 		}
 	};

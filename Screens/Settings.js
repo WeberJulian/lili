@@ -4,11 +4,8 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default class Settings extends Component {
   static navigationOptions = {
-    tabBarLabel: 'Settings',
-    tabBarIcon: ({ tintColor }) => (
-      <Ionicons name="md-settings" size={24} color={tintColor}/>
-    ),
-  }
+		title: 'Paramètres'
+	};
 
   constructor(props) {
     super(props);

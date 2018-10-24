@@ -1,26 +1,31 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Searchbar } from 'react-native-paper';
 
 export default class Liseuse extends Component {
-  static navigationOptions = {
-    tabBarLabel: 'Liseuse',
-    tabBarIcon: ({ tintColor }) => (
-      <Ionicons name="ios-bookmarks" size={24} color={tintColor}/>
-    ),
-  }
+	static navigationOptions = {
+		title: 'Bibliothèque en ligne'
+	};
 
-  constructor(props) {
-    super(props);
-    this.state = {
+	constructor(props) {
+		super(props);
+		this.state = {
+      firstQuery: '',
     };
-  }
+	}
 
-  render() {
-    return (
-      <View>
-        <Text> Liseuse </Text>
-      </View>
-    );
-  }
+	render() {
+    const { firstQuery } = this.state;
+		return (
+			<View>
+				<Searchbar
+        placeholder="Search"
+        style={{margin: 10,}}
+        onChangeText={query => { this.setState({ firstQuery: query }); }}
+        value={firstQuery}
+      />
+			</View>
+		);
+	}
 }

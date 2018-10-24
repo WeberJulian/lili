@@ -31,18 +31,64 @@ var NavigatorEditor = createStackNavigator(
 		initialRouteName: 'ListeEditeur'
 	}
 );
+
+var NavigatorLiseuse = createStackNavigator(
+	{
+		Liseuse: { screen: Liseuse }
+	},
+	{
+		initialRouteName: 'Liseuse'
+	}
+);
+
+var NavigatorClasseVirtuelle = createStackNavigator(
+	{
+		ClasseVirtuelle: { screen: ClasseVirtuelle }
+	},
+	{
+		initialRouteName: 'ClasseVirtuelle'
+	}
+);
+
+var NavigatorSettings = createStackNavigator(
+	{
+		Settings: { screen: Settings }
+	},
+	{
+		initialRouteName: 'Settings'
+	}
+);
+
 var Navigator = createMaterialBottomTabNavigator(
 	{
 		NavigatorEditor: {
 			screen: NavigatorEditor,
 			navigationOptions: {
-				tabBarLabel: 'Editor',
+				tabBarLabel: 'Editeur',
 				tabBarIcon: ({ tintColor }) => <Ionicons name="ios-create" size={24} color={tintColor} />
 			}
 		},
-		Liseuse: { screen: Liseuse },
-		ClasseVirtuelle: { screen: ClasseVirtuelle },
-		Settings: { screen: Settings }
+		Liseuse: {
+			screen: NavigatorLiseuse,
+			navigationOptions: {
+				tabBarLabel: 'Liseuse',
+				tabBarIcon: ({ tintColor }) => <Ionicons name="ios-bookmarks" size={24} color={tintColor} />
+			}
+		},
+		ClasseVirtuelle: {
+			screen: NavigatorClasseVirtuelle,
+			navigationOptions: {
+				tabBarLabel: 'Classe Virtuelle',
+				tabBarIcon: ({ tintColor }) => <Ionicons name="ios-school" size={24} color={tintColor}/>
+			}
+		},
+		Settings: {
+			screen: NavigatorSettings,
+			navigationOptions: {
+				tabBarLabel: 'Paramètres',
+				tabBarIcon: ({ tintColor }) => <Ionicons name="md-settings" size={24} color={tintColor}/>
+			}
+		}
 	},
 	{
 		initialRouteName: 'NavigatorEditor',
