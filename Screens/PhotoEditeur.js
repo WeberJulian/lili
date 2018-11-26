@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import { Camera, Permissions } from 'expo';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { ImageManipulator } from 'expo';
 
 export default class Editeur extends Component {
 	static navigationOptions = {
@@ -27,9 +28,29 @@ export default class Editeur extends Component {
 		this.setState((state) => ({ flash: !state.flash }));
 	}
 
+	async ocr(){
+		const params = {
+			method: 'POST',
+			headers: {
+				'Ocp-Apim-Subscription-Key': '884b904aba6c4d6da791d4862afca010',
+				'Content-Type': 'multipart/form-data'
+			}
+		};
+		let formdata = new FormData();
+		formdata.append('picture', { uri: this.state.photo, name: 'document.jpg', type: 'image/jpg' })
+		var res = await fetch('https://westcentralus.api.cognitive.microsoft.com/vision/v2.0/ocr?language=fr&detectOrientation=true"', {
+			...params,
+			body: formdata
+		})
+		res = await res.json()
+		console.log(res)
+	}
+
 	snap = async () => {
 		if (this.camera) {
-			let photo = await this.camera.takePictureAsync();
+			let photo = await this.camera.takePictureAsync({ base64: true });
+			photo = await ImageManipulator.manipulate(photo.uri, [], { base64: true, compress: 0.8 })
+			this.setState({ base64: photo.base64 });
 			this.setState({ photo: photo.uri });
 		}
 	};
@@ -152,7 +173,7 @@ export default class Editeur extends Component {
 									<MaterialIcons name="cached" size={30} color="white" />
 								</View>
 							</TouchableOpacity>
-							<TouchableOpacity>
+							<TouchableOpacity onPress={this.ocr.bind(this)}>
 								<View
 									style={{
 										height: 60,
