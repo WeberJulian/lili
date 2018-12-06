@@ -18,12 +18,12 @@ export default class Settings extends Component {
 		super(props);
 		this.state = {
 			teacherMode: false,
-			spaceWords: 0,
+			spaceWords: 0.2,
 			spaceLetters: 0,
 			separationSyllabique: false,
 			font: "openDyslexic",
 			fonts: ["openDyslexic", "calibri", "comic"],
-			size: 0,
+			size: 0.1,
 		};
 	}
 
@@ -76,6 +76,7 @@ export default class Settings extends Component {
 					<Text style={styles.option}>Taille de la Police</Text>
 					<Text style={styles.valueSlider}>{Math.round(this.state.size * 10) / 10}</Text>
 					<Slider
+						value={this.state.size}
 						onValueChange={(size) => {
 							this.setState({ size });
 						}}
@@ -96,6 +97,7 @@ export default class Settings extends Component {
 					<Text style={styles.option}>Espacement mots</Text>
 					<Text style={styles.valueSlider}>{Math.round(this.state.spaceWords * 10) / 10}</Text>
 					<Slider
+						value={this.state.spaceWords}
 						onValueChange={(spaceWords) => {
 							this.setState({ spaceWords });
 						}}
@@ -115,6 +117,7 @@ export default class Settings extends Component {
 					<Text style={styles.option}>Espacement lettres</Text>
 					<Text style={styles.valueSlider}>{Math.round(this.state.spaceLetters * 10) / 10}</Text>
 					<Slider
+						value={this.state.spaceLetters}
 						onValueChange={(spaceLetters) => {
 							this.setState({ spaceLetters });
 						}}
@@ -140,8 +143,8 @@ export default class Settings extends Component {
 						color: "black",
 						size: this.state.size * 10 + 10,
 						colors: ["red", "blue"],
-						spaceLetters: 0,
-						spaceWords: this.state.spaceWords * 3 + 2,
+						spaceLetters: this.state.spaceLetters * 7,
+						spaceWords: this.state.spaceWords * 20 + 2,
 						font: this.state.font,
 					}} />
 				</View>

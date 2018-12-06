@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import Text from 'react-native-letter-spacing';
 
 export default class AdaptativeText extends Component{
     constructor(props){
@@ -8,7 +9,10 @@ export default class AdaptativeText extends Component{
     }
 
     generateText(text, options){
-        return <Text style={{
+        return <Text 
+        letterSpacing={options.spaceLetters}
+        wordSpacing={options.spaceWords}
+        style={{
             fontFamily: options.font, 
             color: options.color,
             fontSize: options.size
