@@ -7,6 +7,7 @@ import { Dimensions } from 'react-native';
 var { height, width } = Dimensions.get('window');
 
 import styles from './Styles/SettingsStyles';
+import AdaptativeText from '../Components/AdaptativeText';
 
 export default class Settings extends Component {
 	static navigationOptions = {
@@ -110,6 +111,9 @@ export default class Settings extends Component {
 							}}
 						/>
 					</View>
+				</View>
+				<View>
+					<AdaptativeText text="Ceci est une phrase de test non ésotérique"/>
 				</View>
 			</View>
 		);
