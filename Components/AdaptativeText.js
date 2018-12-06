@@ -13,7 +13,12 @@ export default class AdaptativeText extends Component{
 
     render(){
         return(
-            <View>
+            <View style={{ 
+                margin: 10, 
+                padding: 10, 
+                backgroundColor: this.props.options.backgroundColor, 
+                borderRadius: 10
+            }}>
                 {this.generateText(this.props.text, this.props.options)}
             </View>
         )

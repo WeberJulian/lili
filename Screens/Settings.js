@@ -20,7 +20,13 @@ export default class Settings extends Component {
 			teacherMode: false,
 			spaceWords: 0,
       		spaceLetters: 0,
-      		separationSyllabique: false,
+			separationSyllabique: false,
+			options: {
+				backgroundColor: "white",
+				colors: ["black", "red", "blue"],
+				spaceLetters: 0,
+				spaceWords: 0
+			}  
 		};
 	}
 
@@ -113,7 +119,7 @@ export default class Settings extends Component {
 					</View>
 				</View>
 				<View>
-					<AdaptativeText text="Ceci est une phrase de test non ésotérique"/>
+					<AdaptativeText text="Ceci est une phrase de test non ésotérique" options={this.state.options}/>
 				</View>
 			</View>
 		);
