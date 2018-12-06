@@ -8,7 +8,13 @@ export default class AdaptativeText extends Component{
     }
 
     generateText(text, options){
-        return <Text>{text}</Text>
+        return <Text style={{
+            fontFamily: options.font, 
+            color: options.color,
+            fontSize: options.size
+        }}>
+            {text}
+        </Text>
     }
 
     render(){

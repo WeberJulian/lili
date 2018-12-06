@@ -4,6 +4,8 @@ import { createStackNavigator } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { Provider as PaperProvider } from 'react-native-paper';
 
+import { Font, Asset } from "expo"
+
 import Editeur from './Screens/Editeur';
 import Settings from './Screens/Settings';
 import Liseuse from './Screens/Liseuse';
@@ -12,12 +14,24 @@ import ListeEditeur from './Screens/ListeEditeur';
 import PhotoEditeur from './Screens/PhotoEditeur';
 
 export default class App extends React.Component {
+	constructor() {
+		super()
+		this.state = {
+			loading: true,
+		}
+	}
+	async componentWillMount() {
+		await Font.loadAsync({
+			'calibri': require('./assets/Calibri.ttf'),
+			'openDyslexic': require('./assets/OpenDyslexic.ttf'),
+			'comic': require('./assets/Comic.ttf'),
+		});
+		await Asset.loadAsync([
+		]),
+			this.setState({ loading: false })
+	}
 	render() {
-		return (
-			<PaperProvider>
-				<Navigator />
-			</PaperProvider>
-		);
+		return (this.state.loading ? <Expo.AppLoading /> : <PaperProvider><Navigator /></PaperProvider>)
 	}
 }
 
@@ -79,14 +93,14 @@ var Navigator = createMaterialBottomTabNavigator(
 			screen: NavigatorClasseVirtuelle,
 			navigationOptions: {
 				tabBarLabel: 'Classe Virtuelle',
-				tabBarIcon: ({ tintColor }) => <Ionicons name="ios-school" size={24} color={tintColor}/>
+				tabBarIcon: ({ tintColor }) => <Ionicons name="ios-school" size={24} color={tintColor} />
 			}
 		},
 		Settings: {
 			screen: NavigatorSettings,
 			navigationOptions: {
 				tabBarLabel: 'Paramètres',
-				tabBarIcon: ({ tintColor }) => <Ionicons name="md-settings" size={24} color={tintColor}/>
+				tabBarIcon: ({ tintColor }) => <Ionicons name="md-settings" size={24} color={tintColor} />
 			}
 		}
 	},

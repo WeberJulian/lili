@@ -19,14 +19,11 @@ export default class Settings extends Component {
 		this.state = {
 			teacherMode: false,
 			spaceWords: 0,
-      		spaceLetters: 0,
+			spaceLetters: 0,
 			separationSyllabique: false,
-			options: {
-				backgroundColor: "white",
-				colors: ["black", "red", "blue"],
-				spaceLetters: 0,
-				spaceWords: 0
-			}  
+			font: "openDyslexic",
+			fonts: ["openDyslexic", "calibri", "comic"],
+			size: 0
 		};
 	}
 
@@ -58,15 +55,35 @@ export default class Settings extends Component {
 					<Text style={styles.option}>Police</Text>
 					<View style={styles.pickerContainer}>
 						<Picker
-							selectedValue={this.state.language}
+							selectedValue={this.state.font}
 							style={styles.picker}
-							onValueChange={(itemValue, itemIndex) => this.setState({ language: itemValue })}
+							onValueChange={(itemValue, itemIndex) => this.setState({ font: itemValue })}
 						>
 							<Picker.Item label="Roboto" value="Roboto" />
 							<Picker.Item label="Arial" value="Arial" />
 						</Picker>
 					</View>
 				</View>
+
+				<View
+					style={{
+						flexDirection: 'row',
+						paddingRight: 10,
+						paddingVertical: 10,
+						justifyContent: 'space-between',
+						alignItems: 'center'
+					}}
+				>
+					<Text style={styles.option}>Taille Police</Text>
+					<Text style={styles.valueSlider}>{Math.round(this.state.size * 10) / 10}</Text>
+					<Slider
+						onValueChange={(size) => {
+							this.setState({ size });
+						}}
+						style={{ width: width / 2 }}
+					/>
+				</View>
+
 
 				<View
 					style={{
@@ -119,7 +136,15 @@ export default class Settings extends Component {
 					</View>
 				</View>
 				<View>
-					<AdaptativeText text="Ceci est une phrase de test non ésotérique" options={this.state.options}/>
+					<AdaptativeText text="Ceci est une phrase de test non ésotérique" options={{
+						backgroundColor: "white",
+						color: "black",
+						size: this.state.size * 10 + 10,
+						colors: ["red", "blue"],
+						spaceLetters: 0,
+						spaceWords: 0,
+						font: "comic"
+					}} />
 				</View>
 			</View>
 		);
