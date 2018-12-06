@@ -23,7 +23,7 @@ export default class Settings extends Component {
 			separationSyllabique: false,
 			font: "openDyslexic",
 			fonts: ["openDyslexic", "calibri", "comic"],
-			size: 0
+			size: 0,
 		};
 	}
 
@@ -74,7 +74,7 @@ export default class Settings extends Component {
 						alignItems: 'center'
 					}}
 				>
-					<Text style={styles.option}>Taille Police</Text>
+					<Text style={styles.option}>Taille de la Police</Text>
 					<Text style={styles.valueSlider}>{Math.round(this.state.size * 10) / 10}</Text>
 					<Slider
 						onValueChange={(size) => {
@@ -142,8 +142,8 @@ export default class Settings extends Component {
 						size: this.state.size * 10 + 10,
 						colors: ["red", "blue"],
 						spaceLetters: 0,
-						spaceWords: 0,
-						font: "comic"
+						spaceWords: this.state.spaceWords * 3 + 2,
+						font: this.state.font,
 					}} />
 				</View>
 			</View>
