@@ -59,8 +59,7 @@ export default class Settings extends Component {
 							style={styles.picker}
 							onValueChange={(itemValue, itemIndex) => this.setState({ font: itemValue })}
 						>
-							<Picker.Item label="Roboto" value="Roboto" />
-							<Picker.Item label="Arial" value="Arial" />
+							{GenerateFontList(this.state.fonts)}
 						</Picker>
 					</View>
 				</View>
@@ -152,3 +151,11 @@ export default class Settings extends Component {
 }
 
 const Separator = () => <View style={styles.separator} />;
+
+const GenerateFontList = (fonts) => {
+	var list = []
+	for (var i = 0; i < fonts.length; i++){
+		list.push(<Picker.Item label={fonts[i]} value={fonts[i]} key={i}/>)
+	}
+	return list
+}

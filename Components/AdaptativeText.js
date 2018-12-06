@@ -8,24 +8,13 @@ export default class AdaptativeText extends Component{
     }
 
     generateText(text, options){
-        return <View>
-            {this.renderListWords(text, options, options.spaceWords)}
-        </View>
-    }
-
-    renderListWords(text, options, spaceWords){
-        words = text.split(" ")
-        var ren = []
-        for (var i = 0; i < words.lengh - 1; i++){
-            ren.push(<View><Text style={{
-                fontFamily: options.font, 
-                color: options.color,
-                fontSize: options.size}}>{words[i]}</Text></View>)
-        }
-        ren.push(<Text style={{
+        return <Text style={{
             fontFamily: options.font, 
             color: options.color,
-            fontSize: options.size}}>{words[i+1]}</Text>)
+            fontSize: options.size
+        }}>
+            {text}
+        </Text>
     }
 
     render(){
