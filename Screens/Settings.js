@@ -19,8 +19,8 @@ export default class Settings extends Component {
 		this.state = {
 			teacherMode: false,
 			spaceWords: 0,
-      spaceLetters: 0,
-      separationSyllabique: false,
+      		spaceLetters: 0,
+      		separationSyllabique: false,
 		};
 	}
 

@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
 export default class AdaptativeText extends Component{
     constructor(props){
         super(props)
-        this.state = {
-            
-        }
+        this.state = {}
+    }
+
+    generateText(text, options){
+        <Text>{text}</Text>
     }
 
     render(){
         return(
-            <Text>{this.props.text}</Text>
+            <View>
+                {this.generateText(this.props.text, this.props.options)}
+            </View>
         )
     }
 }
