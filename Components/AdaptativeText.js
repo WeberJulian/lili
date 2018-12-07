@@ -54,8 +54,7 @@ const generateWords = (text, options) => {
         }
         else{
             renWords.push(<Text key={i}>{words[i]}<Text style={{fontSize: options.spaceWords}}> </Text></Text>)
-        }
-        
+        }  
     }
     return renWords
 }

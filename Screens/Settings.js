@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Picker, Slider } from 'react-native';
+import { View, Text, Picker, Slider, TouchableOpacity } from 'react-native';
 import { Ionicons, Entypo } from '@expo/vector-icons';
 import { Switch, List } from 'react-native-paper';
 
@@ -25,6 +25,9 @@ export default class Settings extends Component {
 			font: "openDyslexic",
 			fonts: ["openDyslexic", "calibri", "comic"],
 			size: 0.1,
+			colors: ["black", "white", "red", "blue"],
+			selectedColor: 0,
+			colorPicker: false
 		};
 	}
 
@@ -125,6 +128,7 @@ export default class Settings extends Component {
 						style={{ width: width / 2 }}
 					/>
 				</View>
+
 				<View style={{ flexDirection: 'row', paddingRight: 10, paddingVertical: 10 }}>
 					<View style={{ justifyContent: 'center' }}>
 						<Text style={styles.option}>Séparation syllabique</Text>
@@ -138,12 +142,33 @@ export default class Settings extends Component {
 						/>
 					</View>
 				</View>
+
+				<View style={{ flexDirection: 'row', paddingRight: 10, paddingVertical: 10 }}>
+					<View style={{ justifyContent: 'center' }}>
+						<Text style={styles.option}>Couleurs</Text>
+					</View>
+					<View style={{ flex: 1, flexDirection: 'row-reverse', marginVertical: 5 }}>
+						<TouchableOpacity>
+							<ColorViewer color={this.state.colors[3]}/>
+						</TouchableOpacity>
+						<TouchableOpacity>
+							<ColorViewer color={this.state.colors[2]}/>
+						</TouchableOpacity>
+						<TouchableOpacity>
+							<ColorViewer color={this.state.colors[1]}/>
+						</TouchableOpacity>
+						<TouchableOpacity>
+							<ColorViewer color={this.state.colors[0]}/>
+						</TouchableOpacity>
+					</View>
+				</View>
+
 				<View>
-					<AdaptativeText text="Ceci est une phrase de test non ésotérique" options={{
-						backgroundColor: "white",
-						color: "black",
+					<AdaptativeText text="ceci est une phrase de test non ésotérique" options={{
+						backgroundColor: this.state.colors[1],
+						color: this.state.colors[0],
 						size: this.state.size * 10 + 10,
-						colors: ["red", "blue"],
+						colors: [this.state.colors[2], this.state.colors[3]],
 						spaceLetters: this.state.spaceLetters * 15,
 						spaceWords: this.state.spaceWords * 20 + 2,
 						font: this.state.font,
@@ -163,4 +188,8 @@ const GenerateFontList = (fonts) => {
 		list.push(<Picker.Item label={fonts[i]} value={fonts[i]} key={i}/>)
 	}
 	return list
+}
+
+const ColorViewer = (props) => {
+	return <View style={{ height: 35, width: 35, backgroundColor: props.color, borderRadius: 5, borderColor: "white", borderWidth: 3, margin: 5 }}></View>
 }
