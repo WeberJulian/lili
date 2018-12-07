@@ -9,6 +9,7 @@ var { height, width } = Dimensions.get('window');
 import styles from './Styles/SettingsStyles';
 import AdaptativeText from '../Components/AdaptativeText';
 
+
 export default class Settings extends Component {
 	static navigationOptions = {
 		title: 'Paramètres'
@@ -143,9 +144,10 @@ export default class Settings extends Component {
 						color: "black",
 						size: this.state.size * 10 + 10,
 						colors: ["red", "blue"],
-						spaceLetters: this.state.spaceLetters * 7,
+						spaceLetters: this.state.spaceLetters * 15,
 						spaceWords: this.state.spaceWords * 20 + 2,
 						font: this.state.font,
+						separationSyllabique: this.state.separationSyllabique
 					}} />
 				</View>
 			</View>
