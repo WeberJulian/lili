@@ -8,6 +8,7 @@ var { height, width } = Dimensions.get('window');
 
 import styles from './Styles/SettingsStyles';
 import AdaptativeText from '../Components/AdaptativeText';
+import ColorPicker from '../Components/ColorPicker';
 
 
 export default class Settings extends Component {
@@ -31,9 +32,27 @@ export default class Settings extends Component {
 		};
 	}
 
+	closePicker(){
+		this.setState({colorPicker: false})
+	}
+
+	changeColor(color, index){
+		var colors = [...this.state.colors]
+		colors[index] = color
+		this.setState({colors})		
+	}
+	
+
 	render() {
 		return (
 			<View>
+				<ColorPicker 
+					visible={this.state.colorPicker} 
+					onRequestClose={this.closePicker.bind(this)} 
+					color={this.state.colors[this.state.selectedColor]}
+					colorIndex={this.state.selectedColor}
+					changeColor={this.changeColor.bind(this)}
+				/>
 				<View style={{ flexDirection: 'row', paddingRight: 10, paddingVertical: 10 }}>
 					<View style={{ justifyContent: 'center' }}>
 						<Text style={styles.option}>Mode Professeur</Text>
@@ -148,16 +167,16 @@ export default class Settings extends Component {
 						<Text style={styles.option}>Couleurs</Text>
 					</View>
 					<View style={{ flex: 1, flexDirection: 'row-reverse', marginVertical: 5 }}>
-						<TouchableOpacity>
+						<TouchableOpacity onPress={()=>{this.setState({selectedColor: 3});this.setState({colorPicker: true})}}>
 							<ColorViewer color={this.state.colors[3]}/>
 						</TouchableOpacity>
-						<TouchableOpacity>
+						<TouchableOpacity onPress={()=>{this.setState({selectedColor: 2});this.setState({colorPicker: true})}}>
 							<ColorViewer color={this.state.colors[2]}/>
 						</TouchableOpacity>
-						<TouchableOpacity>
+						<TouchableOpacity onPress={()=>{this.setState({selectedColor: 1});this.setState({colorPicker: true})}}>
 							<ColorViewer color={this.state.colors[1]}/>
 						</TouchableOpacity>
-						<TouchableOpacity>
+						<TouchableOpacity onPress={()=>{this.setState({selectedColor: 0});this.setState({colorPicker: true})}}>
 							<ColorViewer color={this.state.colors[0]}/>
 						</TouchableOpacity>
 					</View>
