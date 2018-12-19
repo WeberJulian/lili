@@ -29,7 +29,8 @@ const generateText = (text, options) => {
             fontFamily: options.font,
             color: options.color,
             fontSize: options.size,
-            letterSpacing: options.spaceLetters
+            letterSpacing: options.spaceLetters,
+            lineHeight: options.spaceLines,
         }}>
         {generateWords(text, options)}
     </Text>

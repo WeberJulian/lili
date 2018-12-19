@@ -22,6 +22,7 @@ export default class Settings extends Component {
 			teacherMode: false,
 			spaceWords: 0.2,
 			spaceLetters: 0,
+			spaceLines: 0.1,
 			separationSyllabique: false,
 			font: "openDyslexic",
 			fonts: ["openDyslexic", "calibri", "comic"],
@@ -148,6 +149,26 @@ export default class Settings extends Component {
 					/>
 				</View>
 
+				<View
+					style={{
+						flexDirection: 'row',
+						paddingRight: 10,
+						paddingVertical: 10,
+						justifyContent: 'space-between',
+						alignItems: 'center'
+					}}
+				>
+					<Text style={styles.option}>Espacement lignes</Text>
+					<Text style={styles.valueSlider}>{Math.round(this.state.spaceLines * 10) / 10}</Text>
+					<Slider
+						value={this.state.spaceLines}
+						onValueChange={(spaceLines) => {
+							this.setState({ spaceLines });
+						}}
+						style={{ width: width / 2 }}
+					/>
+				</View>
+
 				<View style={{ flexDirection: 'row', paddingRight: 10, paddingVertical: 10 }}>
 					<View style={{ justifyContent: 'center' }}>
 						<Text style={styles.option}>Séparation syllabique</Text>
@@ -189,7 +210,8 @@ export default class Settings extends Component {
 						size: this.state.size * 10 + 10,
 						colors: [this.state.colors[2], this.state.colors[3]],
 						spaceLetters: this.state.spaceLetters * 15,
-						spaceWords: this.state.spaceWords * 20 + 2,
+						spaceWords: this.state.spaceLetters * 15 + this.state.spaceWords * 40 + 10,
+						spaceLines: this.state.size * 10 + 10 + this.state.spaceLines * 30,
 						font: this.state.font,
 						separationSyllabique: this.state.separationSyllabique
 					}} />
