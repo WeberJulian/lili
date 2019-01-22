@@ -68,7 +68,9 @@ class ListeEditeur extends Component {
 							theme={{ colors: { accent: 'orange' } }}
 							icon={this.state.open ? 'cancel' : 'add'}
 							actions={[
-								{ icon: 'add', label: 'Vide', onPress: () => console.log('Pressed email') },
+								{ 	icon: 'add', 
+									label: 'Vide', 
+									onPress: () => this.props.navigation.push('Editeur')								},
 								{
 									icon: 'photo-camera',
 									label: 'Scan',

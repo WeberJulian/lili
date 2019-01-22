@@ -12,6 +12,7 @@ import Liseuse from './Screens/Liseuse';
 import ClasseVirtuelle from './Screens/ClasseVirtuelle';
 import ListeEditeur from './Screens/ListeEditeur';
 import PhotoEditeur from './Screens/PhotoEditeur';
+import TextSelector from './Screens/TextSelector';
 
 export default class App extends React.Component {
 	constructor() {
@@ -39,7 +40,8 @@ var NavigatorEditor = createStackNavigator(
 	{
 		ListeEditeur: { screen: ListeEditeur },
 		Editeur: { screen: Editeur },
-		PhotoEditeur: { screen: PhotoEditeur }
+		PhotoEditeur: { screen: PhotoEditeur },
+		TextSelector: { screen: TextSelector }
 	},
 	{
 		initialRouteName: 'ListeEditeur'

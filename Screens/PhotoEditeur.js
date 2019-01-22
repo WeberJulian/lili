@@ -44,6 +44,12 @@ export default class Editeur extends Component {
 			body: formdata
 		})
 		res = await res.json()
+		if(res.regions){
+			this.props.navigation.navigate('TextSelector', {
+				ocr: res,
+				photo: this.state.photo,
+			});
+		}
 		console.log(res)
 	}
 
@@ -51,11 +57,10 @@ export default class Editeur extends Component {
 		if (this.camera) {
 			this.setState({ loading: true });
 			let photo = await this.camera.takePictureAsync();
-			console.log(photo)
 			photo = await ImageManipulator.manipulate(photo.uri, [], { compress: 0.8 })
+			console.log(photo)
 			this.setState({ photo: photo });
 			this.setState({ loading: false });
-			console.log(photo)
 		}
 	};
 
