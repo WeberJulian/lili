@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ActivityIndicator, AsyncStorage } from 'react-native';
+import { View, Text, ActivityIndicator, AsyncStorage, Clipboard } from 'react-native';
 import { List } from 'react-native-paper';
 import { Ionicons, FontAwesome, Entypo } from '@expo/vector-icons';
 import { FAB, Portal } from 'react-native-paper';
@@ -27,6 +27,12 @@ class ListeEditeur extends Component {
 				},
 				{
 					title: '2eme note',
+					preview: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+					content:
+						'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+				},
+				{
+					title: '3eme note',
 					preview: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
 					content:
 						'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
@@ -70,11 +76,17 @@ class ListeEditeur extends Component {
 							actions={[
 								{ 	icon: 'add', 
 									label: 'Vide', 
-									onPress: () => this.props.navigation.push('Editeur')								},
+									onPress: () => this.props.navigation.push('Editeur')								
+								},
 								{
 									icon: 'photo-camera',
 									label: 'Scan',
 									onPress: () => this.props.navigation.push('PhotoEditeur')
+								},
+								{
+									icon: 'input',
+									label: 'Coller',
+									onPress: async () => {var content = await Clipboard.getString();this.props.navigation.push('Editeur', {text: content})}
 								}
 							]}
 							onStateChange={({ open }) => this.setState({ open })}

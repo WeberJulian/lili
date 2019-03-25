@@ -19,6 +19,19 @@ export default class App extends React.Component {
 		super()
 		this.state = {
 			loading: true,
+			settings: {
+				teacherMode: false,
+				spaceWords: 0.2,
+				spaceLetters: 0,
+				spaceLines: 0.1,
+				separationSyllabique: false,
+				font: "openDyslexic",
+				fonts: ["openDyslexic", "calibri", "comic"],
+				size: 0.1,
+				colors: ["black", "white", "red", "blue"],
+				selectedColor: 0,
+				colorPicker: false
+			}
 		}
 	}
 	async componentWillMount() {
@@ -31,8 +44,11 @@ export default class App extends React.Component {
 		]),
 			this.setState({ loading: false })
 	}
+	updateSettings(settings){
+		this.setState({settings})
+	}
 	render() {
-		return (this.state.loading ? <Expo.AppLoading /> : <PaperProvider><Navigator /></PaperProvider>)
+		return (this.state.loading ? <Expo.AppLoading /> : <PaperProvider><Navigator settings={this.state.settings} updateSettings={this.updateSettings.bind(this)}/></PaperProvider>)
 	}
 }
 

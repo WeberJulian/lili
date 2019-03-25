@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Picker, Slider, TouchableOpacity } from 'react-native';
+import { View, Text, Picker, Slider, TouchableOpacity, AsyncStorage } from 'react-native';
 import { Ionicons, Entypo } from '@expo/vector-icons';
 import { Switch, List } from 'react-native-paper';
 
@@ -29,7 +29,7 @@ export default class Settings extends Component {
 			size: 0.1,
 			colors: ["black", "white", "red", "blue"],
 			selectedColor: 0,
-			colorPicker: false
+			colorPicker: false,
 		};
 	}
 
@@ -41,6 +41,15 @@ export default class Settings extends Component {
 		var colors = [...this.state.colors]
 		colors[index] = color
 		this.setState({colors})		
+	}
+
+	async componentWillUpdate(){
+		try {
+			await AsyncStorage.setItem('settings', JSON.stringify({...this.state, time: Date.now()}));
+			console.log("settings saved !")
+		  } catch (error) {
+			// Error saving data
+		  }
 	}
 	
 
