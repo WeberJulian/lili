@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ActivityIndicator, AsyncStorage, Clipboard } from 'react-native';
+import { View, Text, ActivityIndicator, AsyncStorage, Clipboard, Button } from 'react-native';
 import { List } from 'react-native-paper';
 import { Ionicons, FontAwesome, Entypo } from '@expo/vector-icons';
 import { FAB, Portal } from 'react-native-paper';

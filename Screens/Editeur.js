@@ -1,9 +1,33 @@
 import React, { Component } from 'react';
-import { View, Text, PanResponder, AsyncStorage } from 'react-native';
+import { View, Text, PanResponder, AsyncStorage, TouchableOpacity, ScrollView } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Speech } from 'expo';
 import AdaptativeText from '../Components/AdaptativeText';
 import { NavigationEvents } from 'react-navigation';
 
+import styles from './Styles/ListeEditeurStyles';
+
+var rate = 12
+
 export default class Editeur extends Component {
+	static navigationOptions = ({ navigation }) => {
+    return {
+      headerRight: (
+				<TouchableOpacity
+					onPress={async () => {
+							if(await Speech.isSpeakingAsync()){
+								Speech.stop()
+							} else {
+								Speech.speak(navigation.getParam('text', ''), {language: "fr", rate: rate * 3})
+							}
+						}
+					}
+				>
+					<MaterialCommunityIcons name="ear-hearing" size={30} style={{margin: 10}}/>
+				</TouchableOpacity>)
+    };
+  };
+
   constructor(props) {
     super(props)
     this.state = {
@@ -12,6 +36,7 @@ export default class Editeur extends Component {
 				spaceWords: 0.5,
 				spaceLetters: 0.4,
 				spaceLines: 0.5,
+				rate: 1,
 				separationSyllabique: false,
 				font: "openDyslexic",
 				fonts: ["openDyslexic", "calibri", "comic"],
@@ -24,14 +49,14 @@ export default class Editeur extends Component {
   }
 
   async componentWillMount(){
-    var text = this.props.navigation.getParam('text', '');
+		var text = this.props.navigation.getParam('text', '');
 		this.setState({text})
 		try {
 			const settings = await AsyncStorage.getItem('settings');
 			if (settings !== null) {
-				console.log("Settings loaded")
 				settings = await JSON.parse(settings)
 				this.setState({settings})
+				rate = settings.rate
 			}
 		} catch (error) {}
 	}
@@ -42,8 +67,8 @@ export default class Editeur extends Component {
 			if (settings !== null) {
 				settings = await JSON.parse(settings)
 				if (settings.time != this.state.settings.time) {
-					console.log("new version !")
 					this.setState({settings})
+					rate = settings.rate
 				}
 			}
 		} catch (error) {}
@@ -52,7 +77,7 @@ export default class Editeur extends Component {
   render() {
 		var { colors, size, spaceLetters, spaceWords, spaceLines, font, separationSyllabique } = this.state.settings
     return (
-      <View>
+      <ScrollView>
 				<NavigationEvents
       onWillFocus={this.willFocus.bind(this)}
     />
@@ -67,7 +92,7 @@ export default class Editeur extends Component {
 						font: font,
 						separationSyllabique: separationSyllabique
 					}} />
-      </View>
+      </ScrollView>
     );
   }
 }

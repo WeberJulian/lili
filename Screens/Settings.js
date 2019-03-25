@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Picker, Slider, TouchableOpacity, AsyncStorage } from 'react-native';
+import { View, Text, Picker, Slider, TouchableOpacity, AsyncStorage, ScrollView } from 'react-native';
 import { Ionicons, Entypo } from '@expo/vector-icons';
 import { Switch, List } from 'react-native-paper';
 
@@ -23,6 +23,7 @@ export default class Settings extends Component {
 			spaceWords: 0.2,
 			spaceLetters: 0,
 			spaceLines: 0.1,
+			rate: 0.3,
 			separationSyllabique: false,
 			font: "openDyslexic",
 			fonts: ["openDyslexic", "calibri", "comic"],
@@ -43,6 +44,17 @@ export default class Settings extends Component {
 		this.setState({colors})		
 	}
 
+	async componentWillMount(){
+		try {
+			const settings = await AsyncStorage.getItem('settings');
+			if (settings !== null) {
+				settings = await JSON.parse(settings)
+				console.log(settings)
+				this.setState(settings)
+			}
+		} catch (error) {}
+	}
+
 	async componentWillUpdate(){
 		try {
 			await AsyncStorage.setItem('settings', JSON.stringify({...this.state, time: Date.now()}));
@@ -55,7 +67,7 @@ export default class Settings extends Component {
 
 	render() {
 		return (
-			<View>
+			<ScrollView>
 				<ColorPicker 
 					visible={this.state.colorPicker} 
 					onRequestClose={this.closePicker.bind(this)} 
@@ -178,6 +190,26 @@ export default class Settings extends Component {
 					/>
 				</View>
 
+				<View
+					style={{
+						flexDirection: 'row',
+						paddingRight: 10,
+						paddingVertical: 10,
+						justifyContent: 'space-between',
+						alignItems: 'center'
+					}}
+				>
+					<Text style={styles.option}>Vitesse de lecture</Text>
+					<Text style={styles.valueSlider}>{Math.round(this.state.rate * 10) / 10}</Text>
+					<Slider
+						value={this.state.rate}
+						onValueChange={(rate) => {
+							this.setState({ rate });
+						}}
+						style={{ width: width / 2 }}
+					/>
+				</View>
+
 				<View style={{ flexDirection: 'row', paddingRight: 10, paddingVertical: 10 }}>
 					<View style={{ justifyContent: 'center' }}>
 						<Text style={styles.option}>Séparation syllabique</Text>
@@ -225,7 +257,7 @@ export default class Settings extends Component {
 						separationSyllabique: this.state.separationSyllabique
 					}} />
 				</View>
-			</View>
+			</ScrollView>
 		);
 	}
 }

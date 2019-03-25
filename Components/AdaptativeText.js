@@ -41,6 +41,7 @@ const generateWords = (text, options) => {
     var renWords = []
     for(var i = 0; i < words.length; i++){
         if(options.separationSyllabique){
+            console.log(words[i].match(/^[a-zA-Z']+$/))
             var syllables = syl(words[i]).syllables
             var renSyl = []
             if(syllables.length == 1){
