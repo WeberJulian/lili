@@ -40,8 +40,7 @@ const generateWords = (text, options) => {
     var words = text.split(" ")
     var renWords = []
     for(var i = 0; i < words.length; i++){
-        if(options.separationSyllabique){
-            console.log(words[i].match(/^[a-zA-Z']+$/))
+        if(options.separationSyllabique && !words[i] == " "){
             var syllables = syl(words[i]).syllables
             var renSyl = []
             if(syllables.length == 1){

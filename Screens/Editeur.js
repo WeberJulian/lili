@@ -14,7 +14,8 @@ export default class Editeur extends Component {
     return {
       headerRight: (
 				<TouchableOpacity
-					onPress={async () => {
+					onPress={
+						async () => {
 							if(await Speech.isSpeakingAsync()){
 								Speech.stop()
 							} else {
