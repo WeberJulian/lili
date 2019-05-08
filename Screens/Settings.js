@@ -49,7 +49,6 @@ export default class Settings extends Component {
 			const settings = await AsyncStorage.getItem('settings');
 			if (settings !== null) {
 				settings = await JSON.parse(settings)
-				console.log(settings)
 				this.setState(settings)
 			}
 		} catch (error) {}
@@ -58,7 +57,6 @@ export default class Settings extends Component {
 	async componentWillUpdate(){
 		try {
 			await AsyncStorage.setItem('settings', JSON.stringify({...this.state, time: Date.now()}));
-			console.log("settings saved !")
 		  } catch (error) {
 			// Error saving data
 		  }
