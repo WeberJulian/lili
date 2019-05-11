@@ -45,11 +45,13 @@ export default class Settings extends Component {
 	}
 
 	async componentWillMount(){
+		this.init = this.state
 		try {
 			const settings = await AsyncStorage.getItem('settings');
 			if (settings !== null) {
 				settings = await JSON.parse(settings)
 				this.setState(settings)
+				this.init = settings
 			}
 		} catch (error) {}
 	}
@@ -61,7 +63,7 @@ export default class Settings extends Component {
 			// Error saving data
 		  }
 	}
-	
+
 	render() {
 		return (
 			<ScrollView>
@@ -118,7 +120,7 @@ export default class Settings extends Component {
 					<Text style={styles.option}>Taille de la Police</Text>
 					<Text style={styles.valueSlider}>{Math.round(this.state.size * 10) / 10}</Text>
 					<Slider
-						value={this.state.size}
+						value={this.init.size}
 						onValueChange={(size) => {
 							this.setState({ size });
 						}}
@@ -139,7 +141,7 @@ export default class Settings extends Component {
 					<Text style={styles.option}>Espacement mots</Text>
 					<Text style={styles.valueSlider}>{Math.round(this.state.spaceWords * 10) / 10}</Text>
 					<Slider
-						value={this.state.spaceWords}
+						value={this.init.spaceWords}
 						onValueChange={(spaceWords) => {
 							this.setState({ spaceWords });
 						}}
@@ -159,7 +161,7 @@ export default class Settings extends Component {
 					<Text style={styles.option}>Espacement lettres</Text>
 					<Text style={styles.valueSlider}>{Math.round(this.state.spaceLetters * 10) / 10}</Text>
 					<Slider
-						value={this.state.spaceLetters}
+						value={this.init.spaceLetters}
 						onValueChange={(spaceLetters) => {
 							this.setState({ spaceLetters });
 						}}
@@ -179,7 +181,7 @@ export default class Settings extends Component {
 					<Text style={styles.option}>Espacement lignes</Text>
 					<Text style={styles.valueSlider}>{Math.round(this.state.spaceLines * 10) / 10}</Text>
 					<Slider
-						value={this.state.spaceLines}
+						value={this.init.spaceLines}
 						onValueChange={(spaceLines) => {
 							this.setState({ spaceLines });
 						}}
@@ -199,7 +201,7 @@ export default class Settings extends Component {
 					<Text style={styles.option}>Vitesse de lecture</Text>
 					<Text style={styles.valueSlider}>{Math.round(this.state.rate * 10) / 10}</Text>
 					<Slider
-						value={this.state.rate}
+						value={this.init.rate}
 						onValueChange={(rate) => {
 							this.setState({ rate });
 						}}
