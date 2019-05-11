@@ -3,6 +3,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { createStackNavigator } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { Provider as PaperProvider } from 'react-native-paper';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 
 import { Font, Asset } from "expo"
 

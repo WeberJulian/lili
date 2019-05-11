@@ -62,7 +62,6 @@ export default class Settings extends Component {
 		  }
 	}
 	
-
 	render() {
 		return (
 			<ScrollView>
@@ -243,17 +242,7 @@ export default class Settings extends Component {
 				</View>
 
 				<View>
-					<AdaptativeText text="ceci est une phrase de test non ésotérique" options={{
-						backgroundColor: this.state.colors[1],
-						color: this.state.colors[0],
-						size: this.state.size * 10 + 10,
-						colors: [this.state.colors[2], this.state.colors[3]],
-						spaceLetters: this.state.spaceLetters * 15,
-						spaceWords: this.state.spaceLetters * 15 + this.state.spaceWords * 40 + 10,
-						spaceLines: this.state.size * 10 + 10 + this.state.spaceLines * 30,
-						font: this.state.font,
-						separationSyllabique: this.state.separationSyllabique
-					}} />
+					<AdaptativeText text="ceci est une phrase de test non ésotérique" options={this.state} />
 				</View>
 			</ScrollView>
 		);

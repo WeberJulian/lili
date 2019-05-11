@@ -4,24 +4,33 @@ import { View, StyleSheet, Text } from 'react-native';
 const syl = require('gl-syllabler');
 
 export default class AdaptativeText extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {}
-    }
 
     render() {
+        const options = processOptions(this.props.options);
         return (
             <View style={{
                 margin: 10,
                 padding: 10,
-                backgroundColor: this.props.options.backgroundColor,
+                backgroundColor: options.backgroundColor,
                 borderRadius: 10,
             }}>
-                {generateText(this.props.text, this.props.options)}
+                {generateText(this.props.text, options)}
             </View>
         )
     }
 }
+
+const processOptions = (options) => ({
+    backgroundColor: options.colors[1],
+    color: options.colors[0],
+    size: options.size * 10 + 10,
+    colors: [options.colors[2], options.colors[3]],
+    spaceLetters: options.spaceLetters * 15,
+    spaceWords: options.spaceLetters * 15 + options.spaceWords * 40 + 10,
+    spaceLines: options.size * 10 + 10 + options.spaceLines * 30,
+    font: options.font,
+    separationSyllabique: options.separationSyllabique
+})
 
 const generateText = (text, options) => {
     return <Text
