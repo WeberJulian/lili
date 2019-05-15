@@ -8,12 +8,17 @@ export const UPDATE_SPACE_WORDS = "UPDATE_SPACE_WORDS"
 export const UPDATE_SPACE_LETTERS = "UPDATE_SPACE_LETTERS"
 export const UPDATE_SPACE_LINES = "UPDATE_SPACE_LINES"
 export const UPDATE_RATE = "UPDATE_RATE"
+export const UPDATE_SWITCH_SEPARATION_SYLLABIQUE = "UPDATE_SWITCH_SEPARATION_SYLLABIQUE"
+export const UPDATE_FONT = "UPDATE_FONT"
 
 // ACTION CREATORS
 
 export const settingsActions = {
-    updateFontSize(value){
-        return { type: UPDATE_FONT_SIZE, value }
+    updateFont(font){
+        return { type: UPDATE_FONT, font }
+    },
+    updateFontSize(size){
+        return { type: UPDATE_FONT_SIZE, size }
     },
     updateSwitchTeacherMode(){
         return { type: UPDATE_SWITCH_TEACHER_MODE }
@@ -29,5 +34,8 @@ export const settingsActions = {
     },
     updateRate(rate){
         return { type: UPDATE_RATE, rate }
-    }
+    },
+    updateSwitchSeparationSyllabique(){
+        return { type: UPDATE_SWITCH_SEPARATION_SYLLABIQUE }
+    },
 }

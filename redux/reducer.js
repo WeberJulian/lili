@@ -4,7 +4,9 @@ import {
     UPDATE_SPACE_WORDS,
     UPDATE_SPACE_LETTERS,
     UPDATE_SPACE_LINES,
-    UPDATE_RATE
+    UPDATE_RATE,
+    UPDATE_SWITCH_SEPARATION_SYLLABIQUE,
+    UPDATE_FONT
 } from './action'
 
 const initialState = {
@@ -26,8 +28,10 @@ const initialState = {
 
 export default reducer = (state = initialState, action) => { 
     switch(action.type){
+        case UPDATE_FONT:
+            return {...state, settings: {...state.settings, font: action.font}}
         case UPDATE_FONT_SIZE:
-            return {...state, settings: {...state.settings, size: action.value}}
+            return {...state, settings: {...state.settings, size: action.size}}
         case UPDATE_SPACE_WORDS:
             return {...state, settings: {...state.settings, spaceWords: action.spaceWords}}
         case UPDATE_SPACE_LETTERS:
@@ -38,6 +42,11 @@ export default reducer = (state = initialState, action) => {
             return {...state, settings: {...state.settings, rate: action.rate}}
         case UPDATE_SWITCH_TEACHER_MODE:
             return {...state, settings: {...state.settings, teacherMode: !state.settings.teacherMode}}
+        case UPDATE_SWITCH_SEPARATION_SYLLABIQUE:
+            return {...state, settings: {...state.settings, separationSyllabique: !state.settings.separationSyllabique}}
+        default:
+            console.log("No behaviours defined in reducer for action : " + action.type)
+            break;
     }
     return state 
 }

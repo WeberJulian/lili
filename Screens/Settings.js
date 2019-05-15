@@ -27,8 +27,8 @@ class Settings extends Component {
 		this.setState({colors})		
 	}
 
-	// async componentWillMount(){
-	// 	this.init = this.props.settings
+	async componentWillMount(){
+		this.init = this.props
 	// 	try {
 	// 		const settings = await AsyncStorage.getItem('settings');
 	// 		if (settings !== null) {
@@ -37,7 +37,7 @@ class Settings extends Component {
 	// 			this.init = settings
 	// 		}
 	// 	} catch (error) {}
-	// }
+	}
 
 	async componentWillUpdate(){
 		try {
@@ -84,7 +84,7 @@ class Settings extends Component {
 						<Picker
 							selectedValue={this.props.font}
 							style={styles.picker}
-							onValueChange={(itemValue, itemIndex) => this.setState({ font: itemValue })}
+							onValueChange={(font) => this.props.updateFont(font)}
 						>
 							{GenerateFontList(this.props.fonts)}
 						</Picker>
@@ -103,7 +103,7 @@ class Settings extends Component {
 					<Text style={styles.option}>Taille de la Police</Text>
 					<Text style={styles.valueSlider}>{Math.round(this.props.size * 10) / 10}</Text>
 					<Slider
-						value={this.props.size} 
+						value={this.init.size} 
 						onValueChange={(size) => {
 							this.props.updateFontSize(size)
 						}}
@@ -124,7 +124,7 @@ class Settings extends Component {
 					<Text style={styles.option}>Espacement mots</Text>
 					<Text style={styles.valueSlider}>{Math.round(this.props.spaceWords * 10) / 10}</Text>
 					<Slider
-						value={this.props.spaceWords}
+						value={this.init.spaceWords}
 						onValueChange={(spaceWords) => {
 							this.props.updateSpaceWords(spaceWords);
 						}}
@@ -144,7 +144,7 @@ class Settings extends Component {
 					<Text style={styles.option}>Espacement lettres</Text>
 					<Text style={styles.valueSlider}>{Math.round(this.props.spaceLetters * 10) / 10}</Text>
 					<Slider
-						value={this.props.spaceLetters}
+						value={this.init.spaceLetters}
 						onValueChange={(spaceLetters) => {
 							this.props.updateSpaceLetters(spaceLetters);
 						}}
@@ -164,7 +164,7 @@ class Settings extends Component {
 					<Text style={styles.option}>Espacement lignes</Text>
 					<Text style={styles.valueSlider}>{Math.round(this.props.spaceLines * 10) / 10}</Text>
 					<Slider
-						value={this.props.spaceLines}
+						value={this.init.spaceLines}
 						onValueChange={(spaceLines) => {
 							this.props.updateSpaceLines(spaceLines);
 						}}
@@ -184,7 +184,7 @@ class Settings extends Component {
 					<Text style={styles.option}>Vitesse de lecture</Text>
 					<Text style={styles.valueSlider}>{Math.round(this.props.rate * 10) / 10}</Text>
 					<Slider
-						value={this.props.rate}
+						value={this.init.rate}
 						onValueChange={(rate) => {
 							this.props.updateRate(rate);
 						}}
@@ -198,8 +198,9 @@ class Settings extends Component {
 					</View>
 					<View style={{ flex: 1, flexDirection: 'row-reverse', marginVertical: 5 }}>
 						<Switch
+							value={this.props.separationSyllabique}
 							onValueChange={() => {
-								this.setState((prev) => ({ separationSyllabique: !prev.separationSyllabique }));
+								this.props.updateSwitchSeparationSyllabique();
 							}}
 						/>
 					</View>
@@ -250,12 +251,14 @@ const ColorViewer = (props) => {
 const mapStateToProps = (state) => ({...state.settings})
 const mapDispatchToProps = (dispatch) => {
 	return {
+		updateFont: (font) => dispatch(settingsActions.updateFont(font)),
 		updateFontSize: (size) => dispatch(settingsActions.updateFontSize(size)),
 		updateSwitchTeacherMode: () => dispatch(settingsActions.updateSwitchTeacherMode()),
 		updateSpaceWords: (spaceWords) => dispatch(settingsActions.updateSpaceWords(spaceWords)),
 		updateSpaceLetters: (spaceLetters) => dispatch(settingsActions.updateSpaceLetters(spaceLetters)),
 		updateSpaceLines: (spaceLines) => dispatch(settingsActions.updateSpaceLines(spaceLines)),
 		updateRate: (rate) => dispatch(settingsActions.updateRate(rate)),
+		updateSwitchSeparationSyllabique: () => dispatch(settingsActions.updateSwitchSeparationSyllabique())
 	}
 }
 
