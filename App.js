@@ -5,7 +5,6 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 import { Provider as PaperProvider } from 'react-native-paper';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-
 import { Font, Asset } from "expo"
 
 import Editeur from './Screens/Editeur';
@@ -15,6 +14,11 @@ import ClasseVirtuelle from './Screens/ClasseVirtuelle';
 import ListeEditeur from './Screens/ListeEditeur';
 import PhotoEditeur from './Screens/PhotoEditeur';
 import TextSelector from './Screens/TextSelector';
+
+import reducer from './redux/reducer'
+
+
+const store = createStore(reducer)
 
 export default class App extends React.Component {
 	constructor() {
@@ -46,11 +50,17 @@ export default class App extends React.Component {
 		]),
 			this.setState({ loading: false })
 	}
-	updateSettings(settings){
-		this.setState({settings})
+	updateSettings(settings) {
+		this.setState({ settings })
 	}
 	render() {
-		return (this.state.loading ? <Expo.AppLoading /> : <PaperProvider><Navigator settings={this.state.settings} updateSettings={this.updateSettings.bind(this)}/></PaperProvider>)
+		return (this.state.loading ? <Expo.AppLoading /> :
+			<PaperProvider>
+				<Provider store={store}>
+					<Navigator settings={this.state.settings} updateSettings={this.updateSettings.bind(this)} />
+				</Provider>
+			</PaperProvider>
+		)
 	}
 }
 
