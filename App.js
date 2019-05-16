@@ -5,6 +5,10 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 import { Provider as PaperProvider } from 'react-native-paper';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
+import { PersistGate } from 'redux-persist/lib/integration/react';
 import { Font, Asset } from "expo"
 
 import Editeur from './Screens/Editeur';
@@ -17,8 +21,16 @@ import TextSelector from './Screens/TextSelector';
 
 import reducer from './redux/reducer'
 
+const persistConfig = {
+	key: 'root',
+	storage: storage,
+	stateReconciler: autoMergeLevel2
+}
 
-const store = createStore(reducer)
+const pReducer = persistReducer(persistConfig, reducer);
+
+const store = createStore(pReducer)
+const persistor = persistStore(store);
 
 export default class App extends React.Component {
 	constructor() {
@@ -50,14 +62,14 @@ export default class App extends React.Component {
 		]),
 			this.setState({ loading: false })
 	}
-	updateSettings(settings) {
-		this.setState({ settings })
-	}
+
 	render() {
 		return (this.state.loading ? <Expo.AppLoading /> :
 			<PaperProvider>
 				<Provider store={store}>
-					<Navigator settings={this.state.settings} updateSettings={this.updateSettings.bind(this)} />
+					<PersistGate loading={<Navigator settings={this.state.settings} />} persistor={persistor}>
+						<Navigator settings={this.state.settings} />
+					</PersistGate>
 				</Provider>
 			</PaperProvider>
 		)
