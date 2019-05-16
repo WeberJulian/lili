@@ -34,7 +34,6 @@ export default class TextSelector extends Component{
             }
             boxes.push(box)
         }
-        console.log(boxes)
         let boxViews = []
         for (let i = 0; i < boxes.length; i++){
             boxViews.push(<View key={i}

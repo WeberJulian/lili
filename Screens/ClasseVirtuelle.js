@@ -16,11 +16,11 @@ export default class ClasseVirtuelle extends Component {
 	render() {
 		return (
 			<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-				<Button icon="group-add" mode="contained" color="orange" onPress={() => console.log('Pressed')}>
+				<Button icon="group-add" mode="contained" color="orange" onPress={() => alert("Entre un code")}>
 					Entre un code
 				</Button>
         <View style={{ height: 20, width: 20}}/>
-				<Button icon="add-a-photo" mode="contained" color="orange" onPress={() => console.log('Pressed')}>
+				<Button icon="add-a-photo" mode="contained" color="orange" onPress={() => alert("Scanne un code QR")}>
 					Scanne un QR
 				</Button>
 			</View>
