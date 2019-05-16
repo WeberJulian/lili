@@ -6,20 +6,34 @@ import {
     UPDATE_SPACE_LINES,
     UPDATE_RATE,
     UPDATE_SWITCH_SEPARATION_SYLLABIQUE,
-    UPDATE_FONT
+    UPDATE_FONT,
+    UPDATE_BACKGROUND_COLOR,
+    UPDATE_DEFAULT_COLOR,
+    UPDATE_SYLLAB1_COLOR,
+    UPDATE_SYLLAB2_COLOR,
+    UPDATE_COLOR,
+    UPDATE_SELECTED_COLOR,
+    CLOSE_COLOR_PICKER,
+    OPEN_COLOR_PICKER,
+    UPDATE_TEXT
 } from './action'
 
 const initialState = {
+    text: "",
     settings: {
         teacherMode: false,
-        spaceWords: 0.5,
-        spaceLetters: 0.4,
+        spaceWords: 0.3,
+        spaceLetters: 0.2,
         spaceLines: 0.5,
-        rate: 1,
-        separationSyllabique: false,
+        rate: 0.3,
+        separationSyllabique: true,
         font: "openDyslexic",
         fonts: ["openDyslexic", "calibri", "comic"],
-        size: 0.4,
+        size: 0.3,
+        colorBackground: "black",
+        colorDefault: "white",
+        colorSyllab1: "red",
+        colorSyllab2: "blue",
         colors: ["black", "white", "red", "blue"],
         selectedColor: 0,
         colorPicker: false
@@ -28,6 +42,8 @@ const initialState = {
 
 export default reducer = (state = initialState, action) => { 
     switch(action.type){
+        case UPDATE_TEXT:
+            return {...state, text: action.text}
         case UPDATE_FONT:
             return {...state, settings: {...state.settings, font: action.font}}
         case UPDATE_FONT_SIZE:
@@ -44,6 +60,24 @@ export default reducer = (state = initialState, action) => {
             return {...state, settings: {...state.settings, teacherMode: !state.settings.teacherMode}}
         case UPDATE_SWITCH_SEPARATION_SYLLABIQUE:
             return {...state, settings: {...state.settings, separationSyllabique: !state.settings.separationSyllabique}}
+        case UPDATE_BACKGROUND_COLOR:
+            return {...state, settings: {...state.settings, colorBackground: action.color}}
+        case UPDATE_DEFAULT_COLOR:
+            return {...state, settings: {...state.settings, colorDefault: action.color}}
+        case UPDATE_SYLLAB1_COLOR:
+            return {...state, settings: {...state.settings, colorSyllab1: action.color}}
+        case UPDATE_SYLLAB2_COLOR:
+            return {...state, settings: {...state.settings, colorSyllab2: action.color}}
+        case UPDATE_SELECTED_COLOR:
+            return {...state, settings: {...state.settings, selectedColor: action.index}}
+        case CLOSE_COLOR_PICKER:
+            return {...state, settings: {...state.settings, colorPicker: false}}
+        case OPEN_COLOR_PICKER:
+            return {...state, settings: {...state.settings, colorPicker: true}}
+        case UPDATE_COLOR:
+            let colors = [...state.settings.colors]
+            colors[action.index] = action.color
+            return {...state, settings: {...state.settings, colors}}
         default:
             console.log("No behaviours defined in reducer for action : " + action.type)
             break;

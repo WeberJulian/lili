@@ -17,34 +17,8 @@ class Settings extends Component {
 		title: 'Paramètres'
 	};
 
-	closePicker(){
-		this.setState({colorPicker: false})
-	}
-
-	changeColor(color, index){
-		var colors = [...this.props.colors]
-		colors[index] = color
-		this.setState({colors})		
-	}
-
 	async componentWillMount(){
 		this.init = this.props
-	// 	try {
-	// 		const settings = await AsyncStorage.getItem('settings');
-	// 		if (settings !== null) {
-	// 			settings = await JSON.parse(settings)
-	// 			this.setState(settings)
-	// 			this.init = settings
-	// 		}
-	// 	} catch (error) {}
-	}
-
-	async componentWillUpdate(){
-		try {
-			await AsyncStorage.setItem('settings', JSON.stringify({...this.props, time: Date.now()}));
-		  } catch (error) {
-			// Error saving data
-		  }
 	}
 
 	render() {
@@ -52,10 +26,10 @@ class Settings extends Component {
 			<ScrollView>
 				<ColorPicker 
 					visible={this.props.colorPicker} 
-					onRequestClose={this.closePicker.bind(this)} 
+					onRequestClose={this.props.closeColorPicker.bind(this)} 
 					color={this.props.colors[this.props.selectedColor]}
 					colorIndex={this.props.selectedColor}
-					changeColor={this.changeColor.bind(this)}
+					changeColor={this.props.updateColor.bind(this)}
 				/>
 				<View style={{ flexDirection: 'row', paddingRight: 10, paddingVertical: 10 }}>
 					<View style={{ justifyContent: 'center' }}>
@@ -211,16 +185,16 @@ class Settings extends Component {
 						<Text style={styles.option}>Couleurs</Text>
 					</View>
 					<View style={{ flex: 1, flexDirection: 'row-reverse', marginVertical: 5 }}>
-						<TouchableOpacity onPress={()=>{this.setState({selectedColor: 3});this.setState({colorPicker: true})}}>
+						<TouchableOpacity onPress={()=>{this.props.updateSelectedColor(3);this.props.openColorPicker()}}>
 							<ColorViewer color={this.props.colors[3]}/>
 						</TouchableOpacity>
-						<TouchableOpacity onPress={()=>{this.setState({selectedColor: 2});this.setState({colorPicker: true})}}>
+						<TouchableOpacity onPress={()=>{this.props.updateSelectedColor(2);this.props.openColorPicker()}}>
 							<ColorViewer color={this.props.colors[2]}/>
 						</TouchableOpacity>
-						<TouchableOpacity onPress={()=>{this.setState({selectedColor: 1});this.setState({colorPicker: true})}}>
+						<TouchableOpacity onPress={()=>{this.props.updateSelectedColor(1);this.props.openColorPicker()}}>
 							<ColorViewer color={this.props.colors[1]}/>
 						</TouchableOpacity>
-						<TouchableOpacity onPress={()=>{this.setState({selectedColor: 0});this.setState({colorPicker: true})}}>
+						<TouchableOpacity onPress={()=>{this.props.updateSelectedColor(0);this.props.openColorPicker()}}>
 							<ColorViewer color={this.props.colors[0]}/>
 						</TouchableOpacity>
 					</View>
@@ -249,6 +223,7 @@ const ColorViewer = (props) => {
 }
 
 const mapStateToProps = (state) => ({...state.settings})
+
 const mapDispatchToProps = (dispatch) => {
 	return {
 		updateFont: (font) => dispatch(settingsActions.updateFont(font)),
@@ -258,7 +233,11 @@ const mapDispatchToProps = (dispatch) => {
 		updateSpaceLetters: (spaceLetters) => dispatch(settingsActions.updateSpaceLetters(spaceLetters)),
 		updateSpaceLines: (spaceLines) => dispatch(settingsActions.updateSpaceLines(spaceLines)),
 		updateRate: (rate) => dispatch(settingsActions.updateRate(rate)),
-		updateSwitchSeparationSyllabique: () => dispatch(settingsActions.updateSwitchSeparationSyllabique())
+		updateSwitchSeparationSyllabique: () => dispatch(settingsActions.updateSwitchSeparationSyllabique()),
+		updateColor: (color, index) => dispatch(settingsActions.updateColor(color, index)),
+		updateSelectedColor: (index) => dispatch(settingsActions.updateSelectedColor(index)),
+		closeColorPicker: () => dispatch(settingsActions.closeColorPicker()),
+		openColorPicker: () => dispatch(settingsActions.openColorPicker()),
 	}
 }
 
