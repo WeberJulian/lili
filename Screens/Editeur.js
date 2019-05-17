@@ -13,20 +13,39 @@ import { settingsActions } from "../redux/action"
 
 
 class Editeur extends Component {
+	constructor(props){
+		super(props)
+		this.state = {
+			indexRead: -1,
+			continueReading: true
+		}
+	}
 
 	componentWillMount() {
 		this.props.updateText(this.props.navigation.getParam('text', ''))
 	}
 
+	async readText(text){
+		var words = text.split(" ")
+		for(let i = 0; i < words.length;  i++){
+			if(this.state.continueReading){
+				this.setState({indexRead: 0})
+				await Speech.speak(words[i], { language: "fr", rate: this.props.settings.rate * 3 , onDone: ()=>{this.setState({indexRead: i + 1})}})
+			}
+		}
+		this.setState({continueReading: true})
+	}
+
+
 	render() {
 		return (
 			<ScrollView>
 				<Portal.Host>
-					<AdaptativeText text={this.props.text} options={this.props.settings} />
+					<AdaptativeText text={this.props.text} options={this.props.settings} indexRead={this.state.indexRead}/>
 				</Portal.Host>
 				<Portal>
 				{this.props.isFocused ? (
-						<View style={{flex: 1, flexDirection: "column-reverse", alignItems: "flex-end", top: 65, margin: 20}}>
+						<View style={{flex: 1, flexDirection: "column-reverse", alignItems: "flex-end", top: 60, margin: 20}}>
 						<FAB
 							style={{ height: 55, width: 55, alignItems: 'center', justifyContent: 'center',}}
 							color="white"
@@ -37,10 +56,7 @@ class Editeur extends Component {
 									if (await Speech.isSpeakingAsync()) {
 										Speech.stop()
 									} else {
-										Speech.speak("ceci", { language: "fr", rate: this.props.settings.rate * 3 })
-										Speech.speak("est", { language: "fr", rate: this.props.settings.rate * 3 })
-										Speech.speak("un", { language: "fr", rate: this.props.settings.rate * 3 })
-										Speech.speak("test", { language: "fr", rate: this.props.settings.rate * 3 })
+										this.readText(this.props.text)
 									}
 								}
 							}
