@@ -36,8 +36,11 @@ export default class Editeur extends Component {
 			for(let j = 0; j < ocr.regions[i].lines.length; j++){
 				for(let l = 0; l < ocr.regions[i].lines[j].words.length; l++){
 					text += ocr.regions[i].lines[j].words[l].text
+					text += " "
 				}
+				text += "\n"
 			}
+			text += "\n"
 		}
 		return text
 	}
