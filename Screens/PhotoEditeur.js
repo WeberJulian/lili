@@ -29,6 +29,19 @@ export default class Editeur extends Component {
 		this.setState((state) => ({ flash: !state.flash }));
 	}
 
+	extractText(ocr){
+		console.log(ocr)
+		let text = ""
+		for(let i = 0; i < ocr.regions.length; i++){
+			for(let j = 0; j < ocr.regions[i].lines.length; j++){
+				for(let l = 0; l < ocr.regions[i].lines[j].words.length; l++){
+					text += ocr.regions[i].lines[j].words[l].text
+				}
+			}
+		}
+		return text
+	}
+
 	async ocr() {
 		const params = {
 			method: 'POST',
@@ -45,9 +58,8 @@ export default class Editeur extends Component {
 		})
 		res = await res.json()
 		if(res.regions){
-			this.props.navigation.navigate('TextSelector', {
-				ocr: res,
-				photo: this.state.photo,
+			this.props.navigation.navigate('Editeur', {
+				text: this.extractText(res),
 			});
 		}
 	}
