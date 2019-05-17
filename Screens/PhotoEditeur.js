@@ -50,7 +50,6 @@ export default class Editeur extends Component {
 				photo: this.state.photo,
 			});
 		}
-		console.log(res)
 	}
 
 	snap = async () => {
@@ -58,7 +57,6 @@ export default class Editeur extends Component {
 			this.setState({ loading: true });
 			let photo = await this.camera.takePictureAsync();
 			photo = await ImageManipulator.manipulate(photo.uri, [], { compress: 0.8 })
-			console.log(photo)
 			this.setState({ photo: photo });
 			this.setState({ loading: false });
 		}

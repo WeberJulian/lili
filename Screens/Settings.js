@@ -2,78 +2,34 @@ import React, { Component } from 'react';
 import { View, Text, Picker, Slider, TouchableOpacity, AsyncStorage, ScrollView } from 'react-native';
 import { Ionicons, Entypo } from '@expo/vector-icons';
 import { Switch, List } from 'react-native-paper';
-
+import { connect } from 'react-redux'
 import { Dimensions } from 'react-native';
 var { height, width } = Dimensions.get('window');
 
 import styles from './Styles/SettingsStyles';
 import AdaptativeText from '../Components/AdaptativeText';
 import ColorPicker from '../Components/ColorPicker';
+import { settingsActions } from "../redux/action"
 
 
-export default class Settings extends Component {
+class Settings extends Component {
 	static navigationOptions = {
 		title: 'Paramètres'
 	};
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			teacherMode: false,
-			spaceWords: 0.2,
-			spaceLetters: 0,
-			spaceLines: 0.1,
-			rate: 0.3,
-			separationSyllabique: false,
-			font: "openDyslexic",
-			fonts: ["openDyslexic", "calibri", "comic"],
-			size: 0.1,
-			colors: ["black", "white", "red", "blue"],
-			selectedColor: 0,
-			colorPicker: false,
-		};
-	}
-
-	closePicker(){
-		this.setState({colorPicker: false})
-	}
-
-	changeColor(color, index){
-		var colors = [...this.state.colors]
-		colors[index] = color
-		this.setState({colors})		
-	}
-
 	async componentWillMount(){
-		try {
-			const settings = await AsyncStorage.getItem('settings');
-			if (settings !== null) {
-				settings = await JSON.parse(settings)
-				console.log(settings)
-				this.setState(settings)
-			}
-		} catch (error) {}
+		this.init = this.props
 	}
-
-	async componentWillUpdate(){
-		try {
-			await AsyncStorage.setItem('settings', JSON.stringify({...this.state, time: Date.now()}));
-			console.log("settings saved !")
-		  } catch (error) {
-			// Error saving data
-		  }
-	}
-	
 
 	render() {
 		return (
 			<ScrollView>
 				<ColorPicker 
-					visible={this.state.colorPicker} 
-					onRequestClose={this.closePicker.bind(this)} 
-					color={this.state.colors[this.state.selectedColor]}
-					colorIndex={this.state.selectedColor}
-					changeColor={this.changeColor.bind(this)}
+					visible={this.props.colorPicker} 
+					onRequestClose={this.props.closeColorPicker.bind(this)} 
+					color={this.props.colors[this.props.selectedColor]}
+					colorIndex={this.props.selectedColor}
+					changeColor={this.props.updateColor.bind(this)}
 				/>
 				<View style={{ flexDirection: 'row', paddingRight: 10, paddingVertical: 10 }}>
 					<View style={{ justifyContent: 'center' }}>
@@ -81,9 +37,9 @@ export default class Settings extends Component {
 					</View>
 					<View style={{ flex: 1, flexDirection: 'row-reverse', marginVertical: 5 }}>
 						<Switch
-							value={this.state.teacherMode}
+							value={this.props.teacherMode}
 							onValueChange={() => {
-								this.setState((prev) => ({ teacherMode: !prev.teacherMode }));
+								this.props.updateSwitchTeacherMode()
 							}}
 						/>
 					</View>
@@ -100,12 +56,26 @@ export default class Settings extends Component {
 					<Text style={styles.option}>Police</Text>
 					<View style={styles.pickerContainer}>
 						<Picker
-							selectedValue={this.state.font}
+							selectedValue={this.props.font}
 							style={styles.picker}
-							onValueChange={(itemValue, itemIndex) => this.setState({ font: itemValue })}
+							onValueChange={(font) => this.props.updateFont(font)}
 						>
-							{GenerateFontList(this.state.fonts)}
+							{GenerateFontList(this.props.fonts)}
 						</Picker>
+					</View>
+				</View>
+
+				<View style={{ flexDirection: 'row', paddingRight: 10, paddingVertical: 10 }}>
+					<View style={{ justifyContent: 'center' }}>
+						<Text style={styles.option}>Text Gras</Text>
+					</View>
+					<View style={{ flex: 1, flexDirection: 'row-reverse', marginVertical: 5 }}>
+						<Switch
+							value={this.props.bold}
+							onValueChange={() => {
+								this.props.updateSwitchBold()
+							}}
+						/>
 					</View>
 				</View>
 
@@ -119,11 +89,11 @@ export default class Settings extends Component {
 					}}
 				>
 					<Text style={styles.option}>Taille de la Police</Text>
-					<Text style={styles.valueSlider}>{Math.round(this.state.size * 10) / 10}</Text>
+					<Text style={styles.valueSlider}>{Math.round(this.props.size * 10) / 10}</Text>
 					<Slider
-						value={this.state.size}
+						value={this.init.size} 
 						onValueChange={(size) => {
-							this.setState({ size });
+							this.props.updateFontSize(size)
 						}}
 						style={{ width: width / 2 }}
 					/>
@@ -140,11 +110,11 @@ export default class Settings extends Component {
 					}}
 				>
 					<Text style={styles.option}>Espacement mots</Text>
-					<Text style={styles.valueSlider}>{Math.round(this.state.spaceWords * 10) / 10}</Text>
+					<Text style={styles.valueSlider}>{Math.round(this.props.spaceWords * 10) / 10}</Text>
 					<Slider
-						value={this.state.spaceWords}
+						value={this.init.spaceWords}
 						onValueChange={(spaceWords) => {
-							this.setState({ spaceWords });
+							this.props.updateSpaceWords(spaceWords);
 						}}
 						style={{ width: width / 2 }}
 					/>
@@ -160,11 +130,11 @@ export default class Settings extends Component {
 					}}
 				>
 					<Text style={styles.option}>Espacement lettres</Text>
-					<Text style={styles.valueSlider}>{Math.round(this.state.spaceLetters * 10) / 10}</Text>
+					<Text style={styles.valueSlider}>{Math.round(this.props.spaceLetters * 10) / 10}</Text>
 					<Slider
-						value={this.state.spaceLetters}
+						value={this.init.spaceLetters}
 						onValueChange={(spaceLetters) => {
-							this.setState({ spaceLetters });
+							this.props.updateSpaceLetters(spaceLetters);
 						}}
 						style={{ width: width / 2 }}
 					/>
@@ -180,11 +150,11 @@ export default class Settings extends Component {
 					}}
 				>
 					<Text style={styles.option}>Espacement lignes</Text>
-					<Text style={styles.valueSlider}>{Math.round(this.state.spaceLines * 10) / 10}</Text>
+					<Text style={styles.valueSlider}>{Math.round(this.props.spaceLines * 10) / 10}</Text>
 					<Slider
-						value={this.state.spaceLines}
+						value={this.init.spaceLines}
 						onValueChange={(spaceLines) => {
-							this.setState({ spaceLines });
+							this.props.updateSpaceLines(spaceLines);
 						}}
 						style={{ width: width / 2 }}
 					/>
@@ -200,11 +170,11 @@ export default class Settings extends Component {
 					}}
 				>
 					<Text style={styles.option}>Vitesse de lecture</Text>
-					<Text style={styles.valueSlider}>{Math.round(this.state.rate * 10) / 10}</Text>
+					<Text style={styles.valueSlider}>{Math.round(this.props.rate * 10) / 10}</Text>
 					<Slider
-						value={this.state.rate}
+						value={this.init.rate}
 						onValueChange={(rate) => {
-							this.setState({ rate });
+							this.props.updateRate(rate);
 						}}
 						style={{ width: width / 2 }}
 					/>
@@ -216,9 +186,9 @@ export default class Settings extends Component {
 					</View>
 					<View style={{ flex: 1, flexDirection: 'row-reverse', marginVertical: 5 }}>
 						<Switch
-							value={this.state.separationSyllabique}
+							value={this.props.separationSyllabique}
 							onValueChange={() => {
-								this.setState((prev) => ({ separationSyllabique: !prev.separationSyllabique }));
+								this.props.updateSwitchSeparationSyllabique();
 							}}
 						/>
 					</View>
@@ -229,33 +199,23 @@ export default class Settings extends Component {
 						<Text style={styles.option}>Couleurs</Text>
 					</View>
 					<View style={{ flex: 1, flexDirection: 'row-reverse', marginVertical: 5 }}>
-						<TouchableOpacity onPress={()=>{this.setState({selectedColor: 3});this.setState({colorPicker: true})}}>
-							<ColorViewer color={this.state.colors[3]}/>
+						<TouchableOpacity onPress={()=>{this.props.updateSelectedColor(3);this.props.openColorPicker()}}>
+							<ColorViewer color={this.props.colors[3]}/>
 						</TouchableOpacity>
-						<TouchableOpacity onPress={()=>{this.setState({selectedColor: 2});this.setState({colorPicker: true})}}>
-							<ColorViewer color={this.state.colors[2]}/>
+						<TouchableOpacity onPress={()=>{this.props.updateSelectedColor(2);this.props.openColorPicker()}}>
+							<ColorViewer color={this.props.colors[2]}/>
 						</TouchableOpacity>
-						<TouchableOpacity onPress={()=>{this.setState({selectedColor: 1});this.setState({colorPicker: true})}}>
-							<ColorViewer color={this.state.colors[1]}/>
+						<TouchableOpacity onPress={()=>{this.props.updateSelectedColor(1);this.props.openColorPicker()}}>
+							<ColorViewer color={this.props.colors[1]}/>
 						</TouchableOpacity>
-						<TouchableOpacity onPress={()=>{this.setState({selectedColor: 0});this.setState({colorPicker: true})}}>
-							<ColorViewer color={this.state.colors[0]}/>
+						<TouchableOpacity onPress={()=>{this.props.updateSelectedColor(0);this.props.openColorPicker()}}>
+							<ColorViewer color={this.props.colors[0]}/>
 						</TouchableOpacity>
 					</View>
 				</View>
 
 				<View>
-					<AdaptativeText text="ceci est une phrase de test non ésotérique" options={{
-						backgroundColor: this.state.colors[1],
-						color: this.state.colors[0],
-						size: this.state.size * 10 + 10,
-						colors: [this.state.colors[2], this.state.colors[3]],
-						spaceLetters: this.state.spaceLetters * 15,
-						spaceWords: this.state.spaceLetters * 15 + this.state.spaceWords * 40 + 10,
-						spaceLines: this.state.size * 10 + 10 + this.state.spaceLines * 30,
-						font: this.state.font,
-						separationSyllabique: this.state.separationSyllabique
-					}} />
+					<AdaptativeText text="ceci est une phrase de test non ésotérique" options={this.props} />
 				</View>
 			</ScrollView>
 		);
@@ -275,3 +235,25 @@ const GenerateFontList = (fonts) => {
 const ColorViewer = (props) => {
 	return <View style={{ height: 35, width: 35, backgroundColor: props.color, borderRadius: 5, borderColor: "white", borderWidth: 3, margin: 5 }}></View>
 }
+
+const mapStateToProps = (state) => ({...state.settings})
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		updateFont: (font) => dispatch(settingsActions.updateFont(font)),
+		updateFontSize: (size) => dispatch(settingsActions.updateFontSize(size)),
+		updateSwitchTeacherMode: () => dispatch(settingsActions.updateSwitchTeacherMode()),
+		updateSwitchBold: () => dispatch(settingsActions.updateSwitchBold()),
+		updateSpaceWords: (spaceWords) => dispatch(settingsActions.updateSpaceWords(spaceWords)),
+		updateSpaceLetters: (spaceLetters) => dispatch(settingsActions.updateSpaceLetters(spaceLetters)),
+		updateSpaceLines: (spaceLines) => dispatch(settingsActions.updateSpaceLines(spaceLines)),
+		updateRate: (rate) => dispatch(settingsActions.updateRate(rate)),
+		updateSwitchSeparationSyllabique: () => dispatch(settingsActions.updateSwitchSeparationSyllabique()),
+		updateColor: (color, index) => dispatch(settingsActions.updateColor(color, index)),
+		updateSelectedColor: (index) => dispatch(settingsActions.updateSelectedColor(index)),
+		closeColorPicker: () => dispatch(settingsActions.closeColorPicker()),
+		openColorPicker: () => dispatch(settingsActions.openColorPicker()),
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Settings)

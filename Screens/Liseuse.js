@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Searchbar } from 'react-native-paper';
 
@@ -11,8 +11,23 @@ export default class Liseuse extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-      firstQuery: '',
+			firstQuery: '',
+			loading: false
     };
+	}
+
+	handleSearch(query){
+		if(query == ""){
+			this.setState({ loading: false });
+		}
+		else{
+			this.setState({ firstQuery: query });
+			this.setState({ loading: true });
+		}
+	}
+
+	stopLoading(){
+		this.setState({ loading: false });
 	}
 
 	render() {
@@ -22,9 +37,14 @@ export default class Liseuse extends Component {
 				<Searchbar
         placeholder="Search"
         style={{margin: 10,}}
-        onChangeText={query => { this.setState({ firstQuery: query }); }}
+        onChangeText={this.handleSearch.bind(this)}
         value={firstQuery}
       />
+			{
+				this.state.loading ?
+				<ActivityIndicator/> :
+				<View/>
+			}
 			</View>
 		);
 	}

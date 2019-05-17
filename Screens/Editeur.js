@@ -4,96 +4,78 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Speech } from 'expo';
 import AdaptativeText from '../Components/AdaptativeText';
 import { NavigationEvents } from 'react-navigation';
+import { connect } from 'react-redux'
+import { FAB, Portal } from 'react-native-paper';
+import { withNavigationFocus } from 'react-navigation';
 
 import styles from './Styles/ListeEditeurStyles';
+import { settingsActions } from "../redux/action"
 
-var rate = 12
 
-export default class Editeur extends Component {
-	static navigationOptions = ({ navigation }) => {
-    return {
-      headerRight: (
-				<TouchableOpacity
-					onPress={
-						async () => {
-							if(await Speech.isSpeakingAsync()){
-								Speech.stop()
-							} else {
-								Speech.speak(navigation.getParam('text', ''), {language: "fr", rate: rate * 3})
+class Editeur extends Component {
+	constructor(props){
+		super(props)
+		this.state = {
+			indexRead: -1,
+			continueReading: true
+		}
+	}
+
+	componentWillMount() {
+		this.props.updateText(this.props.navigation.getParam('text', ''))
+	}
+
+	async readText(text){
+		var words = text.split(" ")
+		for(let i = 0; i < words.length;  i++){
+			if(this.state.continueReading){
+				this.setState({indexRead: 0})
+				await Speech.speak(words[i], { language: "fr", rate: this.props.settings.rate * 3 , onDone: ()=>{this.setState({indexRead: i + 1})}})
+			}
+		}
+		this.setState({continueReading: true})
+	}
+
+
+	render() {
+		return (
+			<ScrollView>
+				<Portal.Host>
+					<AdaptativeText text={this.props.text} options={this.props.settings} indexRead={this.state.indexRead}/>
+				</Portal.Host>
+				<Portal>
+				{this.props.isFocused ? (
+						<View style={{flex: 1, flexDirection: "column-reverse", alignItems: "flex-end", top: 60, margin: 20}}>
+						<FAB
+							style={{ height: 55, width: 55, alignItems: 'center', justifyContent: 'center',}}
+							color="white"
+							theme={{ colors: { accent: 'orange' } }}
+							icon="speaker"
+							onPress={
+								async () => {
+									if (await Speech.isSpeakingAsync()) {
+										Speech.stop()
+									} else {
+										this.readText(this.props.text)
+									}
+								}
 							}
-						}
-					}
-				>
-					<MaterialCommunityIcons name="ear-hearing" size={30} style={{margin: 10}}/>
-				</TouchableOpacity>)
-    };
-  };
-
-  constructor(props) {
-    super(props)
-    this.state = {
-			settings: {
-				teacherMode: false,
-				spaceWords: 0.5,
-				spaceLetters: 0.4,
-				spaceLines: 0.5,
-				rate: 1,
-				separationSyllabique: false,
-				font: "openDyslexic",
-				fonts: ["openDyslexic", "calibri", "comic"],
-				size: 0.4,
-				colors: ["black", "white", "red", "blue"],
-				selectedColor: 0,
-				colorPicker: false
-			}
-		};
-  }
-
-  async componentWillMount(){
-		var text = this.props.navigation.getParam('text', '');
-		this.setState({text})
-		try {
-			const settings = await AsyncStorage.getItem('settings');
-			if (settings !== null) {
-				settings = await JSON.parse(settings)
-				this.setState({settings})
-				rate = settings.rate
-			}
-		} catch (error) {}
+						/>
+					</View>
+					) : (
+						<View />
+					)}
+				</Portal>
+			</ScrollView>
+		);
 	}
-	
-	async willFocus(){
-		try {
-			const settings = await AsyncStorage.getItem('settings');
-			if (settings !== null) {
-				settings = await JSON.parse(settings)
-				if (settings.time != this.state.settings.time) {
-					this.setState({settings})
-					rate = settings.rate
-				}
-			}
-		} catch (error) {}
-	}
-
-  render() {
-		var { colors, size, spaceLetters, spaceWords, spaceLines, font, separationSyllabique } = this.state.settings
-    return (
-      <ScrollView>
-				<NavigationEvents
-      onWillFocus={this.willFocus.bind(this)}
-    />
-        <AdaptativeText text={this.state.text} options={{
-						backgroundColor: colors[1],
-						color: colors[0],
-						size: size * 10 + 10,
-						colors: [colors[2], colors[3]],
-						spaceLetters: spaceLetters * 15,
-						spaceWords: spaceLetters * 15 + spaceWords * 40 + 10,
-						spaceLines: size * 10 + 10 + spaceLines * 30,
-						font: font,
-						separationSyllabique: separationSyllabique
-					}} />
-      </ScrollView>
-    );
-  }
 }
+
+const mapStateToProps = (state) => ({ ...state })
+const mapDispatchToProps = (dispatch) => {
+	return {
+		updateText: (text) => dispatch(settingsActions.updateText(text)),
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigationFocus(Editeur))

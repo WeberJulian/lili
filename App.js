@@ -3,7 +3,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { createStackNavigator } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { Provider as PaperProvider } from 'react-native-paper';
-
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
+import { PersistGate } from 'redux-persist/lib/integration/react';
 import { Font, Asset } from "expo"
 
 import Editeur from './Screens/Editeur';
@@ -13,6 +18,19 @@ import ClasseVirtuelle from './Screens/ClasseVirtuelle';
 import ListeEditeur from './Screens/ListeEditeur';
 import PhotoEditeur from './Screens/PhotoEditeur';
 import TextSelector from './Screens/TextSelector';
+
+import reducer from './redux/reducer'
+
+const persistConfig = {
+	key: 'root',
+	storage: storage,
+	stateReconciler: autoMergeLevel2
+}
+
+const pReducer = persistReducer(persistConfig, reducer);
+
+const store = createStore(pReducer)
+const persistor = persistStore(store);
 
 export default class App extends React.Component {
 	constructor() {
@@ -44,11 +62,17 @@ export default class App extends React.Component {
 		]),
 			this.setState({ loading: false })
 	}
-	updateSettings(settings){
-		this.setState({settings})
-	}
+
 	render() {
-		return (this.state.loading ? <Expo.AppLoading /> : <PaperProvider><Navigator settings={this.state.settings} updateSettings={this.updateSettings.bind(this)}/></PaperProvider>)
+		return (this.state.loading ? <Expo.AppLoading /> :
+			<PaperProvider>
+				<Provider store={store}>
+					<PersistGate loading={<Navigator settings={this.state.settings} />} persistor={persistor}>
+						<Navigator settings={this.state.settings} />
+					</PersistGate>
+				</Provider>
+			</PaperProvider>
+		)
 	}
 }
 

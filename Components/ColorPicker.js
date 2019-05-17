@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Button, Text, Modal, TouchableOpacity } from 'react-native';
 
-export default class ColorPicer extends Component {
+export default class ColorPicker extends Component {
     constructor(props) {
         super(props)
         this.state = {
