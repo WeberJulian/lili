@@ -65,6 +65,20 @@ class Settings extends Component {
 					</View>
 				</View>
 
+				<View style={{ flexDirection: 'row', paddingRight: 10, paddingVertical: 10 }}>
+					<View style={{ justifyContent: 'center' }}>
+						<Text style={styles.option}>Text Gras</Text>
+					</View>
+					<View style={{ flex: 1, flexDirection: 'row-reverse', marginVertical: 5 }}>
+						<Switch
+							value={this.props.bold}
+							onValueChange={() => {
+								this.props.updateSwitchBold()
+							}}
+						/>
+					</View>
+				</View>
+
 				<View
 					style={{
 						flexDirection: 'row',
@@ -229,6 +243,7 @@ const mapDispatchToProps = (dispatch) => {
 		updateFont: (font) => dispatch(settingsActions.updateFont(font)),
 		updateFontSize: (size) => dispatch(settingsActions.updateFontSize(size)),
 		updateSwitchTeacherMode: () => dispatch(settingsActions.updateSwitchTeacherMode()),
+		updateSwitchBold: () => dispatch(settingsActions.updateSwitchBold()),
 		updateSpaceWords: (spaceWords) => dispatch(settingsActions.updateSpaceWords(spaceWords)),
 		updateSpaceLetters: (spaceLetters) => dispatch(settingsActions.updateSpaceLetters(spaceLetters)),
 		updateSpaceLines: (spaceLines) => dispatch(settingsActions.updateSpaceLines(spaceLines)),

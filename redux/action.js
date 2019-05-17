@@ -3,6 +3,7 @@
 
 export const UPDATE_FONT_SIZE = "UPDATE_FONT_SIZE"
 export const UPDATE_SWITCH_TEACHER_MODE = "UPDATE_SWITCH_TEACHER_MODE"
+export const UPDATE_SWITCH_BOLD = "UPDATE_SWITCH_BOLD"
 export const UPDATE_SPACE_WORDS = "UPDATE_SPACE_WORDS"
 export const UPDATE_SPACE_LETTERS = "UPDATE_SPACE_LETTERS"
 export const UPDATE_SPACE_LINES = "UPDATE_SPACE_LINES"
@@ -30,6 +31,9 @@ export const settingsActions = {
     },
     updateSwitchTeacherMode(){
         return { type: UPDATE_SWITCH_TEACHER_MODE }
+    },
+    updateSwitchBold(){
+        return { type: UPDATE_SWITCH_BOLD }
     },
     updateSpaceWords(spaceWords){
         return { type: UPDATE_SPACE_WORDS, spaceWords }

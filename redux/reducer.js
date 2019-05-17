@@ -15,7 +15,8 @@ import {
     UPDATE_SELECTED_COLOR,
     CLOSE_COLOR_PICKER,
     OPEN_COLOR_PICKER,
-    UPDATE_TEXT
+    UPDATE_TEXT,
+    UPDATE_SWITCH_BOLD
 } from './action'
 
 const initialState = {
@@ -36,7 +37,8 @@ const initialState = {
         colorSyllab2: "blue",
         colors: ["black", "white", "red", "blue"],
         selectedColor: 0,
-        colorPicker: false
+        colorPicker: false,
+        bold: false
     }
 }
 
@@ -58,6 +60,8 @@ export default reducer = (state = initialState, action) => {
             return {...state, settings: {...state.settings, rate: action.rate}}
         case UPDATE_SWITCH_TEACHER_MODE:
             return {...state, settings: {...state.settings, teacherMode: !state.settings.teacherMode}}
+        case UPDATE_SWITCH_BOLD:
+            return {...state, settings: {...state.settings, bold: !state.settings.bold}}
         case UPDATE_SWITCH_SEPARATION_SYLLABIQUE:
             return {...state, settings: {...state.settings, separationSyllabique: !state.settings.separationSyllabique}}
         case UPDATE_BACKGROUND_COLOR:

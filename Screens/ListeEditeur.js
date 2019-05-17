@@ -64,6 +64,7 @@ class ListeEditeur extends Component {
 		return (
 			<View style={styles.container}>
 				{this.state.loading ? <ActivityIndicator size="large" /> : <GenerateListe liste={this.state.liste} />}
+				
 
 				<Portal>
 					{this.props.isFocused ? (
